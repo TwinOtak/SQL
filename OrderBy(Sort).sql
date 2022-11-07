@@ -1,3 +1,11 @@
+SELECT	TOP(1000) *
+FROM	Products
+ORDER BY	UnitPrice		--по возрастанию
+
+SELECT	TOP(1000) *
+FROM	Products
+ORDER BY	UnitPrice DESC	--по убыванию
+
 SELECT	Top (1) WITH TIES ShipCountry
 FROM	Orders
 WHERE	Year(OrderDate) = 1997
