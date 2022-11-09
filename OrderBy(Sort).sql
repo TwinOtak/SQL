@@ -1,6 +1,6 @@
 SELECT	TOP(1000) *
 FROM	Products
-ORDER BY	UnitPrice		--по возрастанию
+ORDER BY	UnitPrice ASC	--по возрастанию
 
 SELECT	TOP(1000) *
 FROM	Products
