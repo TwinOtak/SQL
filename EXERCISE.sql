@@ -54,3 +54,11 @@ FROM	Orders
 WHERE	ShipCountry = 'Switzerland'
 	AND	YEAR(OrderDate) = 1997
 	AND	MONTH(OrderDate) BETWEEN 6 AND 8
+
+----------------------------------------------------------------------
+
+--Какой продавец оформил самый последний заказ в Париж?
+SELECT	TOP(1) WITH TIES EmployeeID
+FROM	Orders
+WHERE	ShipCity = 'Paris'
+ORDER BY	OrderDate DESC
