@@ -1,10 +1,10 @@
 SELECT	TOP(1000) *
 FROM	Products
-ORDER BY	UnitPrice ASC	--по возрастанию
+ORDER BY	UnitPrice ASC	--РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ
 
 SELECT	TOP(1000) *
 FROM	Products
-ORDER BY	UnitPrice DESC	--по убыванию проверка кодировки
+ORDER BY	UnitPrice DESC	--РїРѕ СѓР±С‹РІР°РЅРёСЋ
 
 SELECT	Top (1) WITH TIES ShipCountry
 FROM	Orders
