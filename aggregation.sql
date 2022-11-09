@@ -13,7 +13,26 @@ FROM	titles
 WHERE	type = 'business'
 
 ----------------------------------------------------------------------
+--Сколько клиентов проживает в Лондоне?
+SELECT	Count(*)
+FROM	Customers
+WHERE	City = 'London'
 
-SELECT	Avg(UnitPrice) -- для другой бд
-FROM	Products
-WHERE	CategoryID = 1
+--Каких клиентов больше: с факсом или без факса?
+SELECT	COUNT(*)
+FROM	Customers
+WHERE	Fax IS NOT NULL
+
+SELECT	COUNT(*)
+FROM	Customers
+WHERE	Fax IS NULL
+--В данном решении количество находится в разных запросах, нам нужно поместить их в один следующим образом
+SELECT	COUNT(Fax), COUNT(*) - COUNT(Fax)
+FROM	Customers
+--Нужно стараться загонять значнеия в одну строку для дальнейших операций
+
+--Сколько клиентов обслужил продавец №1 в 1997 году?
+SELECT	COUNT(*), COUNT(DISTINCT CustomerID) --Нужно брать уникальные значения, т.к. я работаю с таблицей заказов, а мне нужно получить количество обслуженных ПОКУПАТЕЛЕЙ, А НЕ ЗАКАЗОВ
+FROM	Orders
+WHERE	EmployeeID = 1
+	AND	YEAR(OrderDate) = 1997
