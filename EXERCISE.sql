@@ -34,3 +34,16 @@ SELECT	COUNT(*), COUNT(DISTINCT CustomerID) --Нужно брать уникал
 FROM	Orders
 WHERE	EmployeeID = 1
 	AND	YEAR(OrderDate) = 1997
+
+----------------------------------------------------------------------
+
+SELECT	TOP(100) *
+FROM	[Order Details]
+
+SELECT	TOP(100) *
+FROM	Orders
+
+--Посчитать выручку с товара №1
+SELECT	ROUND(SUM(UnitPrice * Quantity * (1 - Discount)), 6)
+FROM	[Order Details]
+WHERE	ProductID = 1
