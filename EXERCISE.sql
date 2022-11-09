@@ -47,3 +47,10 @@ FROM	Orders
 SELECT	ROUND(SUM(UnitPrice * Quantity * (1 - Discount)), 6)
 FROM	[Order Details]
 WHERE	ProductID = 1
+
+--Сколько немецких городов обсужили летом 1997 года?
+SELECT	COUNT(DISTINCT ShipCity)
+FROM	Orders
+WHERE	ShipCountry = 'Switzerland'
+	AND	YEAR(OrderDate) = 1997
+	AND	MONTH(OrderDate) BETWEEN 6 AND 8
