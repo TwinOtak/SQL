@@ -4,7 +4,7 @@ ORDER BY	UnitPrice ASC	--по возрастанию
 
 SELECT	TOP(1000) *
 FROM	Products
-ORDER BY	UnitPrice DESC	--по убыванию
+ORDER BY	UnitPrice DESC	--по убыванию проверка кодировки
 
 SELECT	Top (1) WITH TIES ShipCountry
 FROM	Orders
