@@ -1,4 +1,4 @@
-SELECT	price, 
-		Round(price, 0), Round(price, -1), --количество чисел после запятой
-		Ceiling(price), Floor(price) --Округлениее веерх, вниз
+п»їSELECT	price, 
+		Round(price, 0), Round(price, -1), --РєРѕР»РёС‡РµСЃС‚РІРѕ С‡РёСЃРµР» РїРѕСЃР»Рµ Р·Р°РїСЏС‚РѕР№
+		Ceiling(price), Floor(price) --РћРєСЂСѓРіР»РµРЅРёРµРµ РІРµРµСЂС…, РІРЅРёР·
 FROM	titles
