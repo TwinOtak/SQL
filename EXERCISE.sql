@@ -15,3 +15,16 @@ WHERE	EmployeeID = 1
 SELECT	Count(*)
 FROM	Customers
 WHERE	City = 'London'
+
+--Каких клиентов больше: с факсом или без факса?
+SELECT	COUNT(*)
+FROM	Customers
+WHERE	Fax IS NOT NULL
+
+SELECT	COUNT(*)
+FROM	Customers
+WHERE	Fax IS NULL
+--В данном решении количество находится в разных запросах, нам нужно поместить их в один следующим образом
+SELECT	COUNT(Fax), COUNT(*) - COUNT(Fax)
+FROM	Customers
+--Нужно стараться загонять значнеия в одну строку для дальнейших операций
