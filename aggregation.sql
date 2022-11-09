@@ -14,3 +14,6 @@ WHERE	type = 'business'
 
 ----------------------------------------------------------------------
 
+SELECT	Avg(UnitPrice) -- для другой бд
+FROM	Products
+WHERE	CategoryID = 1
