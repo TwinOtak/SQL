@@ -28,3 +28,9 @@ WHERE	Fax IS NULL
 SELECT	COUNT(Fax), COUNT(*) - COUNT(Fax)
 FROM	Customers
 --Нужно стараться загонять значнеия в одну строку для дальнейших операций
+
+--Сколько клиентов обслужил продавец №1 в 1997 году?
+SELECT	COUNT(*), COUNT(DISTINCT CustomerID) --Нужно брать уникальные значения, т.к. я работаю с таблицей заказов, а мне нужно получить количество обслуженных ПОКУПАТЕЛЕЙ, А НЕ ЗАКАЗОВ
+FROM	Orders
+WHERE	EmployeeID = 1
+	AND	YEAR(OrderDate) = 1997
