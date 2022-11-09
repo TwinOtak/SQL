@@ -10,3 +10,8 @@ SELECT	DISTINCT ShipCity
 FROM	Orders
 WHERE	EmployeeID = 1
 	AND	YEAR(OrderDate) = 1996
+
+--Сколько клиентов проживает в Лондоне?
+SELECT	Count(*)
+FROM	Customers
+WHERE	City = 'London'
