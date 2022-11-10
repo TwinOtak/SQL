@@ -18,3 +18,22 @@ FROM		Orders
 WHERE		YEAR(OrderDate) = 1997
 GROUP BY	EmployeeID, ShipCountry
 HAVING		COUNT(DISTINCT ShipCity) > 5
+
+--В каких категориях максимальная цена товара превышает 50?
+SELECT		CategoryID, MAX(UnitPrice)
+FROM		Products
+GROUP BY	CategoryID
+HAVING		MAX(UnitPrice) > 50
+
+SELECT		DISTINCT CategoryID
+FROM		Products
+WHERE		UnitPrice > 50
+
+--1. Сначала придумать, потом решить
+--2. Осмысленная задача
+--3. Не решается без HAVING'а
+--Какиие доставщики доставили более 3 миллионов заказов?
+SELECT		ShipVia, SUM(OrderID)
+FROM		Orders
+GROUP BY	ShipVia
+HAVING		SUM(OrderID) > 3000000
