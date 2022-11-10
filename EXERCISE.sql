@@ -76,7 +76,7 @@ GROUP BY	ShipCity
 
 --Какой продавец поставил рекорд:
 --Обслужил больше всего клиентов из одной страны в течение месяца?
-SELECT		TOP(1) EmployeeID--, COUNT(DISTINCT CustomerID)
+SELECT		TOP(1) WITH TIES EmployeeID--, COUNT(DISTINCT CustomerID)
 FROM		Orders
 GROUP BY	YEAR(OrderDate), MONTH(OrderDate), EmployeeID, ShipCountry
 ORDER BY	COUNT(DISTINCT CustomerID) DESC
