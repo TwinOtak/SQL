@@ -14,7 +14,7 @@ FROM		Employees
 --Посчитать среднюю цену товара для каждой категории
 SELECT		CategoryName,
 			(
-			SELECT		AVG(UnitPrice)	--Нужно чтобфы возвращал только 1 значение
+			SELECT		AVG(UnitPrice)	--Нужно чтобы возвращал только 1 значение
 			FROM		Products
 			WHERE		CategoryID = Categories.CategoryID
 			) AS AveragePrice
