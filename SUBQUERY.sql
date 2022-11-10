@@ -19,3 +19,13 @@ SELECT		CategoryName,
 			WHERE		CategoryID = Categories.CategoryID
 			) AS AveragePrice
 FROM		Categories
+
+--Посчитать выручку с каждого товара (Название)
+SELECT		ProductName,
+			(
+			SELECT		SUM(UnitPrice*Quantity*(1-Discount))
+			FROM		[Order Details]
+			WHERE		ProductID = Products.ProductID
+			)  AS INCOME
+FROM		Products
+
