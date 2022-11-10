@@ -62,3 +62,21 @@ SELECT	TOP(1) WITH TIES EmployeeID
 FROM	Orders
 WHERE	ShipCity = 'Paris'
 ORDER BY	OrderDate DESC
+
+--В какой категории(талице) больше всего товаров?
+SELECT		TOP(1) WITH TIES CategoryID--, Count(*)
+FROM		Products
+GROUP BY	CategoryID
+ORDER BY	Count(*) DESC
+
+--Сколько заказов оформлено в каждый город?
+SELECT		ShipCity, COUNT(*)
+FROM		Orders
+GROUP BY	ShipCity
+
+--Какой продавец поставил рекорд:
+--Обслужил больше всего клиентов из одной страны в течение месяца?
+SELECT		TOP(1) EmployeeID--, COUNT(DISTINCT CustomerID)
+FROM		Orders
+GROUP BY	YEAR(OrderDate), MONTH(OrderDate), EmployeeID
+ORDER BY	COUNT(DISTINCT CustomerID) DESC
