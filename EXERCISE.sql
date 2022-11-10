@@ -104,3 +104,57 @@ SELECT		ShipVia, SUM(OrderID)
 FROM		Orders
 GROUP BY	ShipVia
 HAVING		SUM(OrderID) > 3000000
+
+---------------------------------------------------------------
+
+SELECT		City
+FROM		Employees
+
+SELECT		City
+FROM		Customers
+---------------------
+SELECT		City
+FROM		Employees
+	UNION		--DISTINCT объединение
+SELECT		City
+FROM		Customers
+---------------------
+SELECT		City
+FROM		Employees
+	UNION ALL	--Объединение всего, но в данном случае будут повторения
+SELECT		City
+FROM		Customers
+---------------------
+--Нашли отток клиентов
+SELECT		CustomerID
+FROM		Orders
+WHERE		YEAR(OrderDate) = 1997
+	EXCEPT
+SELECT		CustomerID
+FROM		Orders
+WHERE		YEAR(OrderDate) = 1998
+
+--Нашли новых клиентов
+SELECT		CustomerID
+FROM		Orders
+WHERE		YEAR(OrderDate) = 1998
+	EXCEPT
+SELECT		CustomerID
+FROM		Orders
+WHERE		YEAR(OrderDate) = 1997
+
+--Постоянные клиенты, которые покупали на протяжении 3 лет
+SELECT		CustomerID
+FROM		Orders
+WHERE		YEAR(OrderDate) = 1998
+	INTERSECT
+SELECT		CustomerID
+FROM		Orders
+WHERE		YEAR(OrderDate) = 1997
+	INTERSECT
+SELECT		CustomerID
+FROM		Orders
+WHERE		YEAR(OrderDate) = 1996
+
+------------------------------------------------------------------------------------
+
