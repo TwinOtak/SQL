@@ -78,5 +78,5 @@ GROUP BY	ShipCity
 --Обслужил больше всего клиентов из одной страны в течение месяца?
 SELECT		TOP(1) EmployeeID--, COUNT(DISTINCT CustomerID)
 FROM		Orders
-GROUP BY	YEAR(OrderDate), MONTH(OrderDate), EmployeeID
+GROUP BY	YEAR(OrderDate), MONTH(OrderDate), EmployeeID, ShipCountry
 ORDER BY	COUNT(DISTINCT CustomerID) DESC
