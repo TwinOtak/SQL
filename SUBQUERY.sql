@@ -28,4 +28,17 @@ SELECT		ProductName,
 			WHERE		ProductID = Products.ProductID
 			)  AS INCOME
 FROM		Products
+-----
 
+--Если мы хотим искать по вложенному селекту или сортировать по нему же
+--то в where и order by нужно переносить весь вложенный селект целиком
+WHERE		(
+			SELECT		SUM(UnitPrice*Quantity*(1-Discount))
+			FROM		[Order Details]
+			WHERE		ProductID = Products.ProductID
+			) > 10000
+ORDER BY	(
+			SELECT		SUM(UnitPrice*Quantity*(1-Discount))
+			FROM		[Order Details]
+			WHERE		ProductID = Products.ProductID
+			)
