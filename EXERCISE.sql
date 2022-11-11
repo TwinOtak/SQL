@@ -235,3 +235,34 @@ WHERE		(
 			WHERE		YEAR(OrderDate) = 1997
 					AND EmployeeID = Employees.EmployeeID
 			) > 30
+
+---------------------------------------------------------------------------------------------
+
+--Протягивание данных черех несколько не смежных таблиц
+--Сколько денег потратил каждый покупатель
+--Список чего я хочу получить? :Покупателя, иду в таблицу покупателей
+SELECT		ContactName,
+			(
+			SELECT		SUM(UnitPrice * Quantity * (1 - Discount))
+			FROM		[Order Details]
+			WHERE		OrderID IN	(--Список заказов одного покупателя
+									SELECT		OrderID
+									FROM		Orders
+									WHERE		CustomerID = Customers.CustomerID
+									)
+			) AS Spend
+FROM		Customers
+
+--Сколько штук мы продали в каждой категории? :Нужен список категорий
+
+SELECT		CategoryName, --Теперь нужно посчитать количество штук
+			(
+			SELECT		SUM(Quantity)
+			FROM		[Order Details]
+			WHERE		ProductID IN	(--Список товаров из одной категории
+										SELECT		ProductID
+										FROM		Products
+										WHERE		CategoryID = Categories.CategoryID
+										)
+			) AS Quantity
+FROM		Categories
