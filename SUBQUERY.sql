@@ -128,3 +128,16 @@ GROUP BY	ShipCountry
 
 --Протягивание данных черех несколько не смежных таблиц
 --Сколько денег потратил каждый покупатель
+--Список чего я хочу получить? :Покупателя, иду в таблицу покупателей
+SELECT		ContactName,
+			(
+			SELECT		SUM(UnitPrice * Quantity * (1 - Discount))
+			FROM		[Order Details]
+			WHERE		OrderID IN	(--Список заказов одного покупателя
+									SELECT		OrderID
+									FROM		Orders
+									WHERE		CustomerID = Customers.CustomerID
+									)
+			) AS Spend
+FROM		Customers
+
