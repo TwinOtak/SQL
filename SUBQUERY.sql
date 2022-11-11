@@ -141,3 +141,16 @@ SELECT		ContactName,
 			) AS Spend
 FROM		Customers
 
+--Сколько штук мы продали в каждой категории? :Нужен список категорий
+
+SELECT		CategoryName, --Теперь нужно посчитать количество штук
+			(
+			SELECT		SUM(Quantity)
+			FROM		[Order Details]
+			WHERE		ProductID IN	(--Список товаров из одной категории
+										SELECT		ProductID
+										FROM		Products
+										WHERE		CategoryID = Categories.CategoryID
+										)
+			) AS Quantity
+FROM		Categories
