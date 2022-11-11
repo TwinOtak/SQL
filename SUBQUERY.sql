@@ -42,3 +42,12 @@ ORDER BY	(
 			FROM		[Order Details]
 			WHERE		ProductID = Products.ProductID
 			)
+
+--Как зовут покупателей, обслуживавшихся у разных продавцов?
+SELECT		ContactName, CompanyName			
+FROM		Customers
+WHERE		(
+			SELECT		COUNT(DISTINCT EmployeeID)
+			FROM		ORDERS
+			WHERE		CustomerID = Customers.CustomerID
+			) > 1
