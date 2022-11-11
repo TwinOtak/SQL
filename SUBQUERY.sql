@@ -155,3 +155,16 @@ SELECT		CategoryName, --Теперь нужно посчитать количе�
 			) AS Quantity
 FROM		Categories
 
+--Сколько штук купил каждый покупатель (ФИО) в 1997 году?
+SELECT		ContactName,
+			(--Беру сумму количества из детализации заказов где ID заказа находится в диапазоне
+			SELECT		SUM(Quantity)
+			FROM		[Order Details]
+			WHERE		OrderID IN	(--Беру все ID заказов из таблицы заказов, где ID покупателя совпадает с ID из внешнего Select
+									SELECT		OrderID
+									FROM		Orders
+									WHERE		CustomerID = Customers.CustomerID
+											AND YEAR(OrderDate) = 1997
+									)
+			) AS Quantity
+FROM		Customers
