@@ -225,3 +225,13 @@ ORDER BY	(
 			FROM		[Order Details]
 			WHERE		ProductID = Products.ProductID
 			) DESC
+
+--Как зовут продавцов, которые в 1997 году оформили больше 30 заказов?
+SELECT		LastName + ' ' + FirstName
+FROM		Employees
+WHERE		(
+			SELECT		COUNT(OrderID)
+			FROM		Orders
+			WHERE		YEAR(OrderDate) = 1997
+					AND EmployeeID = Employees.EmployeeID
+			) > 30
