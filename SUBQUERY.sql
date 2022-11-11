@@ -75,3 +75,56 @@ WHERE		(
 			WHERE		YEAR(OrderDate) = 1997
 					AND EmployeeID = Employees.EmployeeID
 			) > 30
+
+--------------------------------------------------------------------------
+--Сложные аспекты подзапросов
+SELECT		LastName + ' ' + FirstName AS Name,
+			(
+			SELECT		COUNT(*)
+			FROM		Orders
+			WHERE		EmployeeID = Employees.EmployeeID
+			) AS Total
+FROM		Employees
+WHERE		(
+			SELECT		COUNT(*)
+			FROM		Orders
+			WHERE		EmployeeID = Employees.EmployeeID
+			) > 100
+--Если нам нужно убрать дубликаты кода, то можно решенную задачу предатавить в запросе в виде таблицы FROM (Главное чтобы все колонки были наименованы), и можно обращаться к наименованным столбцам, а не дублировать код при вставке в WHERE
+SELECT *
+FROM	(
+		SELECT		LastName + ' ' + FirstName AS Name,
+					(
+					SELECT		COUNT(*)
+					FROM		Orders
+					WHERE		EmployeeID = Employees.EmployeeID
+					) AS Total
+		FROM		Employees
+		) AS MyTable
+WHERE	Total > 100
+
+-- Сколько штук товаров продано в каждую страну?
+SELECT		ShipCountry,
+			(
+			SELECT		SUM(Quantity)
+			FROM		[Order Details]
+			WHERE		OrderID = Orders.OrderID
+			)
+FROM		Orders
+--Вот мы решили задачу, но у нас теперь таблица заказов и есть дубликаты стран, т.к. изначально таблицы стран нет
+--Оборачиваем решенную задачу во внешний запрос и поместим нашу задачу в поле FROM
+--После чего можем использовать group by
+SELECT		ShipCountry, SUM(SubTotal)
+FROM		(
+			SELECT		ShipCountry,
+						(
+						SELECT		SUM(Quantity)
+						FROM		[Order Details]
+						WHERE		OrderID = Orders.OrderID
+						) AS SubTotal
+			FROM		Orders
+			) AS MyOrders
+GROUP BY	ShipCountry
+
+--Протягивание данных черех несколько не смежных таблиц
+--Сколько денег потратил каждый покупатель
