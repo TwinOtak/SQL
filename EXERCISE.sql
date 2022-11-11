@@ -266,3 +266,4 @@ SELECT		CategoryName, --Теперь нужно посчитать количе�
 										)
 			) AS Quantity
 FROM		Categories
+
