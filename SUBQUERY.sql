@@ -51,3 +51,17 @@ WHERE		(
 			FROM		ORDERS
 			WHERE		CustomerID = Customers.CustomerID
 			) > 1
+
+-- Как называется товар, которого мы продали больше всего (штук)?
+SELECT		TOP(1) WITH TIES  ProductName--,ProductID,
+--			(
+--			SELECT		SUM(Quantity)
+--			FROM		[Order Details]
+--			WHERE		ProductID = Products.ProductID
+--			) AS Quantity
+FROM		Products
+ORDER BY	(
+			SELECT		SUM(Quantity)
+			FROM		[Order Details]
+			WHERE		ProductID = Products.ProductID
+			) DESC
