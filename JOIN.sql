@@ -123,3 +123,52 @@ GROUP BY	ContactName
 SELECT		ContactName, COUNT(OrderID) --Поправляем COUNT
 FROM		Customers AS C LEFT JOIN Orders AS O ON C.CustomerID = O.CustomerID
 GROUP BY	ContactName
+
+--Сколько заказов оформил каждый продавец в Париж?
+SELECT		FirstName + ' ' + LastName, COUNT(OrderID)
+FROM		Employees AS E LEFT JOIN Orders AS O	ON E.EmployeeID = O.EmployeeID
+		AND	ShipCity = 'Paris'	--Правильно
+--WHERE		ShipCity = 'Paris'	--Не правильно
+GROUP BY	FirstName + ' ' + LastName
+
+--Работа Cross Join
+SELECT		CategoryName, CategoryID,
+			EmployeeID, FirstName + ' ' + LastName
+--				8					9	=8*9=72 строки
+FROM		Categories CROSS JOIN Employees
+--Работа Inner Join
+SELECT		CategoryName, CategoryID,
+			EmployeeID, FirstName + ' ' + LastName
+--				8						9			=на выходе 8 строк в этом условии
+FROM		Categories AS C INNER JOIN Employees AS E	ON C.CategoryID = E.EmployeeID
+--Работа Left Join
+SELECT		CategoryName, CategoryID,
+			EmployeeID, FirstName + ' ' + LastName
+--				8						9			= на выходе 8 строк, тк Left Join больше нечего добавить к таблице
+FROM		Categories AS C LEFT JOIN Employees AS E	ON C.CategoryID = E.EmployeeID
+--Работа Right Join
+SELECT		CategoryName, CategoryID,
+			EmployeeID, FirstName + ' ' + LastName
+--				8						9			= на выходе 9 строк, тк во второй таблице строк больше
+FROM		Categories AS C RIGHT JOIN Employees AS E	ON C.CategoryID = E.EmployeeID
+
+SELECT		CategoryName, CategoryID,
+			EmployeeID, FirstName + ' ' + LastName
+--				8						9			--Условие никогда не выполнится, но спасет строки из правой таблицы
+FROM		Categories AS C RIGHT JOIN Employees AS E	
+			ON 1 = 2
+			--ON C.CategoryID = E.EmployeeID
+----Работа Full Join
+SELECT		CategoryName, CategoryID,
+			EmployeeID, FirstName + ' ' + LastName
+--				8						9			= Условие никогда не выполнится, но спасает строки из двух таблиц, подставляя значения NULL
+FROM		Categories AS C FULL JOIN Employees AS E	
+			ON 1 = 2
+			--ON C.CategoryID = E.EmployeeID
+
+
+SELECT		CategoryName, CategoryID,
+			EmployeeID, FirstName + ' ' + LastName
+--				8						9
+FROM		Categories AS C RIGHT JOIN Employees AS E	
+			ON C.CategoryID < E.EmployeeID
