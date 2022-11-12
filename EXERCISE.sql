@@ -353,3 +353,37 @@ FROM		Employees AS E INNER JOIN Orders AS O
 			ON E.EmployeeID = O.EmployeeID
 			AND YEAR(OrderDate) = 1997
 GROUP BY	FirstName + ' ' + LastName
+
+--Задача INNER JOIN на 4 таблицы
+--Как называется категория, которой заинтересовалос больше всего покупателей?
+SELECT		TOP(1) CategoryName--, COUNT(DISTINCT CustomerID) as Q_CustomerID
+FROM		Categories AS C INNER JOIN Products AS P	ON C.CategoryID = P.CategoryID
+			INNER JOIN [Order Details] AS OD	ON	P.ProductID = OD.ProductID
+			INNER JOIN Orders AS O	ON OD.OrderID = O.OrderID
+GROUP BY	CategoryName
+ORDER BY	COUNT(DISTINCT CustomerID) DESC
+
+-----Типичные ошибки при использовании join
+--Сколько заказов сделал каждый покупатель (ФИО)?
+--Решение с помоью подзапроса (Вывел 91 строку)
+SELECT		ContactName,
+			(
+			SELECT	COUNT(*)
+			FROM	Orders
+			WHERE	CustomerID = Customers.CustomerID
+			)
+FROM		Customers
+ORDER BY	ContactName ASC
+--Решение с помощью join (Вывел 89 строк)
+SELECT		ContactName, COUNT(*)
+FROM		Customers AS C INNER JOIN Orders AS O ON C.CustomerID = O.CustomerID
+GROUP BY	ContactName
+--Тк у нас есть покупатели без заказов, нужно использовать LEFT JOIN
+SELECT		ContactName, COUNT(*) --Тут появляется ОШИБКА №2
+FROM		Customers AS C LEFT JOIN Orders AS O ON C.CustomerID = O.CustomerID
+GROUP BY	ContactName
+--При стороннем join нельзя использовать COUNT(*), т.к. будем считать не понятно что
+--В таком случае нужно применять COUNT к какому то полю из второй таблицы (При LEFT JOIN) и которое ВСЕГДА ЕСТЬ (Обычно это первичный ключ)
+SELECT		ContactName, COUNT(OrderID) --Поправляем COUNT
+FROM		Customers AS C LEFT JOIN Orders AS O ON C.CustomerID = O.CustomerID
+GROUP BY	ContactName
