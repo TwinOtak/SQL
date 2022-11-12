@@ -124,13 +124,15 @@ SELECT		ContactName, COUNT(OrderID) --Поправляем COUNT
 FROM		Customers AS C LEFT JOIN Orders AS O ON C.CustomerID = O.CustomerID
 GROUP BY	ContactName
 
---Сколько заказов оформил каждый продавец в Париж?
+--Сколько заказов оформил каждый продавец (ФИО) в Париж?
 SELECT		FirstName + ' ' + LastName, COUNT(OrderID)
 FROM		Employees AS E LEFT JOIN Orders AS O	ON E.EmployeeID = O.EmployeeID
 		AND	ShipCity = 'Paris'	--Правильно
 --WHERE		ShipCity = 'Paris'	--Не правильно
 GROUP BY	FirstName + ' ' + LastName
 
+
+------------------------------------------------------------------------------------
 --Работа Cross Join
 SELECT		CategoryName, CategoryID,
 			EmployeeID, FirstName + ' ' + LastName
@@ -172,3 +174,12 @@ SELECT		CategoryName, CategoryID,
 --				8						9
 FROM		Categories AS C RIGHT JOIN Employees AS E	
 			ON C.CategoryID < E.EmployeeID
+------------------------------------------------------------------------------------
+
+--Сколько штук продал каждый продавец (ФИО) в Лондон? Дополнительно: Считать товары только с номером 1.
+SELECT		FirstName + ' ' + LastName, IsNull(SUM(Quantity),0)
+FROM		Employees AS E LEFT JOIN Orders AS O	ON E.EmployeeID = O.EmployeeID
+			LEFT JOIN [Order Details] AS OD	ON	O.OrderID = OD.OrderID
+		AND	ShipCity = 'London'
+WHERE		ProductID = 1	--Дополнительно
+GROUP BY	FirstName + ' ' + LastName
