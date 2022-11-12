@@ -393,5 +393,5 @@ SELECT		FirstName + ' ' + LastName, IsNull(SUM(Quantity),0)
 FROM		Employees AS E LEFT JOIN Orders AS O	ON E.EmployeeID = O.EmployeeID
 			LEFT JOIN [Order Details] AS OD	ON	O.OrderID = OD.OrderID
 		AND	ShipCity = 'London'
-WHERE		ProductID = 1	--Дополнительно
+		AND ProductID = 1	--Дополнительно
 GROUP BY	FirstName + ' ' + LastName
