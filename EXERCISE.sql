@@ -408,3 +408,27 @@ FROM	Products AS P LEFT JOIN
 		)
 		ON P.ProductID = OD.ProductID
 GROUP BY	ProductName
+
+--APPLY-------------------------------------------------------------------------------------------------
+
+--Для каждого продавца показать три его любимых города? (Город в который он чаще всего продает заказы)
+--Продавцы - Список №1 (Его перебираем), Города - Список №2 (Его обновляем). Начинаем решать со второго списка.
+--Строим второй список
+SELECT	TOP(3) WITH TIES ShipCity, COUNT(*)
+FROM	Orders
+WHERE	EmployeeID = 2
+GROUP BY ShipCity
+ORDER BY COUNT(*) DESC
+--Вот три любимых города для продавца №2. (Для примера: У него есть одинаковые значения)
+--Теперь формируем первый список
+SELECT	FirstName + ' ' + LastName
+FROM	Employees
+--Теперь соединяем списки через CROSS APPLY
+SELECT	FirstName + ' ' + LastName, ShipCity
+FROM	Employees AS E	CROSS APPLY (
+									SELECT	TOP(3) WITH TIES ShipCity
+									FROM	Orders
+									WHERE	EmployeeID = E.EmployeeID
+									GROUP BY ShipCity
+									ORDER BY COUNT(*) DESC
+									) AS C
