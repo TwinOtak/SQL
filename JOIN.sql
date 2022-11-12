@@ -45,3 +45,11 @@ WHERE		P.ProductID = OD.ProductID
 GROUP BY	ProductName
 HAVING		SUM(Quantity) > 100	--Дополнительно 1
 ORDER BY	SUM(Quantity) DESC	--Дополнительно 2
+
+--Если таблиц больше 2, то нужно перемножить все что в условии + все что между этими таблицами
+--Сколько денег выручил каждый продавец (ФИО)?
+SELECT		LastName + ' ' + FirstName AS Name, SUM(UnitPrice * Quantity * (1 - Discount)) AS Income
+FROM		Employees AS E CROSS JOIN Orders AS O CROSS JOIN [Order Details] AS OD
+WHERE		E.EmployeeID = O.EmployeeID
+		AND	O.OrderID = OD.OrderID
+GROUP BY	LastName + ' ' + FirstName
