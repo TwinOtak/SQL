@@ -53,3 +53,31 @@ FROM		Employees AS E CROSS JOIN Orders AS O CROSS JOIN [Order Details] AS OD
 WHERE		E.EmployeeID = O.EmployeeID
 		AND	O.OrderID = OD.OrderID
 GROUP BY	LastName + ' ' + FirstName
+
+--INNER JOIN - Это как cross join но со встроенной фильтровкой (Пересечение)
+--Сколько заказов оформил каждый покупатель в 1997?
+SELECT		FirstName + ' ' + LastName, COUNT(*)
+FROM		Employees AS E CROSS JOIN Orders AS O
+WHERE		E.EmployeeID = O.EmployeeID	-- Это условие постоянно при CROSS JOIN, его убираем с помощью INNER JOIN
+		AND	YEAR(OrderDate) = 1997		-- Бизнес условие, в каждой задаче разное
+GROUP BY	FirstName + ' ' + LastName
+----------------
+--Переделываем в INNER JOIN с фильтрацией ВНЕ join (По умолчания делается так)
+--Нужно разделять технические и бизнес условия
+SELECT		FirstName + ' ' + LastName, COUNT(*)
+FROM		Employees AS E INNER JOIN Orders AS O
+			ON E.EmployeeID = O.EmployeeID
+WHERE		YEAR(OrderDate) = 1997
+GROUP BY	FirstName + ' ' + LastName
+--Можно поменять местами проверку ключей и произвольного условия
+SELECT		FirstName + ' ' + LastName, COUNT(*)
+FROM		Employees AS E INNER JOIN Orders AS O
+			ON YEAR(OrderDate) = 1997
+WHERE		E.EmployeeID = O.EmployeeID
+GROUP BY	FirstName + ' ' + LastName
+--Можно оставить фильтрацию ВНУТРИ join
+SELECT		FirstName + ' ' + LastName, COUNT(*)
+FROM		Employees AS E INNER JOIN Orders AS O
+			ON E.EmployeeID = O.EmployeeID
+			AND YEAR(OrderDate) = 1997
+GROUP BY	FirstName + ' ' + LastName
