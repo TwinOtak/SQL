@@ -237,3 +237,7 @@ FROM	Products AS P LEFT JOIN
 		)
 		ON P.ProductID = OD.ProductID
 GROUP BY	ProductName
+
+
+
+--ИНФОРМАЦИЯ ПРО APPLY В ОТДЕЛЬНОМ ФАЙЛЕ
