@@ -183,3 +183,45 @@ FROM		Employees AS E LEFT JOIN Orders AS O	ON E.EmployeeID = O.EmployeeID
 		AND	ShipCity = 'London'
 		AND ProductID = 1	--Дополнительно
 GROUP BY	FirstName + ' ' + LastName
+
+--Пример			--ЭТО ПРИМЕР НЕПРАВИЛЬНОГО РЕШЕНИЯ JOIN'ОМ С ОШИБКОЙ
+--Сколько штук чая(ProductName = 'chai') продал каждый продавец (ФИО) в Лондон?
+SELECT		FirstName + ' ' + LastName, IsNull(SUM(Quantity),0)
+FROM		Employees AS E LEFT JOIN Orders AS O	ON E.EmployeeID = O.EmployeeID
+		AND	ShipCity = 'London'
+			LEFT JOIN [Order Details] AS OD	ON	O.OrderID = OD.OrderID
+			LEFT JOIN Products AS P	ON OD.ProductID = P.ProductID
+		AND P.ProductName = 'Chai'	
+GROUP BY	FirstName + ' ' + LastName
+
+--Пример. Пояснение	--ЭТО ПРИМЕР НЕПРАВИЛЬНОГО РЕШЕНИЯ JOIN'ОМ С ОШИБКОЙ
+SELECT		FirstName + ' ' + LastName, ShipCity, P.ProductID, Quantity,  ProductName
+FROM		Employees AS E LEFT JOIN Orders AS O	ON E.EmployeeID = O.EmployeeID
+		AND	ShipCity = 'London'
+			LEFT JOIN [Order Details] AS OD	ON	O.OrderID = OD.OrderID
+			LEFT JOIN Products AS P	ON OD.ProductID = P.ProductID
+		AND P.ProductName = ('Chai')	
+
+--ПРИМЕР ПРАВИЛЬНОГО РЕШЕНИЯ методом закрутки join'ов в обратную сторону (Не очень красивый метод, но простой)
+SELECT		FirstName + ' ' + LastName, IsNull(SUM(Quantity),0)
+FROM		Products AS P INNER JOIN [Order Details] AS OD	ON P.ProductID = OD.ProductID	--Тут меняем на INNER
+		AND P.ProductName = 'Chai'
+			INNER JOIN Orders AS O	ON OD.OrderID = O.OrderID	--Тут меняем на INNER
+		AND	ShipCity = 'London'
+			RIGHT JOIN Employees AS E	ON E.EmployeeID = O.EmployeeID	--Тут меняем на RIGHT
+GROUP BY	FirstName + ' ' + LastName
+
+--ПРИМЕР ПРАВИЛЬНОГО РЕШЕНИЯ методом установки скобочек
+--УСТАНОВКА СКОБОЧЕК для порядка действий
+SELECT		FirstName + ' ' + LastName, IsNull(SUM(Quantity),0)
+FROM		Employees AS E LEFT JOIN
+			(
+			Orders AS O	INNER JOIN [Order Details] AS OD
+			ON	O.OrderID = OD.OrderID
+			AND	ShipCity = 'London'
+			INNER JOIN Products AS P
+			ON OD.ProductID = P.ProductID
+			AND P.ProductName = 'Chai'
+			)
+			ON E.EmployeeID = O.EmployeeID
+GROUP BY	FirstName + ' ' + LastName
