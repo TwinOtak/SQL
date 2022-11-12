@@ -298,3 +298,22 @@ WHERE		Categories.CategoryID = Products.CategoryID
 --Следовательно мы получили список товаров, который дополнительно обогащен своей категорией (Названием, а не ID)
 --4 шаг. Ответить себе "Что я хочу получить?" (Группировка)
 Group by	Categories.CategoryID, CategoryName
+
+--Сколько заказов оформил каждый продавец?
+SELECT		FirstName + ' ' + LastName AS Name, COUNT(*) AS Quantity, COUNT(DISTINCT CustomerID) AS Q_Customers	--В подзапросах пришлось бы ветку писать
+--5.Считаем количество заказов
+FROM		Employees AS E CROSS JOIN Orders AS O
+--1.Перемножаем все, что в условии
+WHERE		E.EmployeeID = O.EmployeeID
+--2.Отбираем действительные комбинации
+--3.Получился список заказов
+GROUP	BY	FirstName + ' ' + LastName
+--4.Группируем по продавцам
+
+--Сколько штук каждого товара (Название) мы продали? (Дополнительно: Больше 100 штук. Дополнительно: Какой больше всего продавался)
+SELECT		TOP(1) ProductName, SUM(Quantity) AS Quantity
+FROM		Products AS P CROSS JOIN [Order Details] AS OD
+WHERE		P.ProductID = OD.ProductID
+GROUP BY	ProductName
+HAVING		SUM(Quantity) > 100	--Дополнительно 1
+ORDER BY	SUM(Quantity) DESC	--Дополнительно 2
