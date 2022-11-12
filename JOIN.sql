@@ -225,3 +225,15 @@ FROM		Employees AS E LEFT JOIN
 			)
 			ON E.EmployeeID = O.EmployeeID
 GROUP BY	FirstName + ' ' + LastName
+
+--Сколько штук каждого товара (Название) мы продали в августе 1996 года?
+SELECT	ProductName, IsNull(SUM(Quantity),0)
+FROM	Products AS P LEFT JOIN 
+		(
+		[Order Details] AS OD INNER JOIN Orders AS O
+		ON OD.OrderID = O.OrderID
+		AND YEAR(OrderDate) = 1996
+		AND MONTH(OrderDate) = 8
+		)
+		ON P.ProductID = OD.ProductID
+GROUP BY	ProductName
