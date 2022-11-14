@@ -33,7 +33,41 @@ SELECT		ShipCountry, YEAR(OrderDate), EmployeeID,  COUNT(*)
 FROM		Orders
 GROUP BY	ShipCountry, YEAR(OrderDate), EmployeeID WITH ROLLUP --Добавили ID работника
 
---WITH CUBE
-SELECT		ShipCountry, YEAR(OrderDate), COUNT(*)
+--WITH CUBE--Появляется много пустых строк, каке-то подытоги, а какие-то могут быть реально пустыми
+SELECT		ShipCountry, YEAR(OrderDate), COUNT(*),
+			Grouping(ShipCountry),
+			Grouping(YEAR(OrderDate))
 FROM		Orders
 GROUP BY	ShipCountry, YEAR(OrderDate) WITH CUBE
+
+--Иммитация подытога с помощью UNION--
+SELECT		ShipCountry, YEAR(OrderDate), EmployeeID, COUNT(*)
+FROM		Orders
+GROUP BY	ShipCountry, YEAR(OrderDate),EmployeeID
+
+	UNION ALL
+
+SELECT		ShipCountry, YEAR(OrderDate), NULL, COUNT(*)
+FROM		Orders
+GROUP BY	ShipCountry, YEAR(OrderDate)	--По стране и году, без участия продавца
+
+	UNION ALL
+
+SELECT		NULL, YEAR(OrderDate), EmployeeID, COUNT(*)
+FROM		Orders
+GROUP BY	YEAR(OrderDate), EmployeeID	--По году и продавцу
+
+	UNION ALL
+
+SELECT		NULL, NULL, NULL, COUNT(*)
+FROM		Orders
+
+--GROUPING SETS, Более современная функция для подытогов--
+SELECT		ShipCountry, YEAR(OrderDate), EmployeeID, COUNT(*)
+FROM		Orders
+GROUP BY	GROUPING SETS	(
+							(ShipCountry, YEAR(OrderDate), EmployeeID),
+							(ShipCountry, YEAR(OrderDate)),
+							(YEAR(OrderDate), EmployeeID),
+							()--Общий итог
+							)
