@@ -16,7 +16,7 @@ WHERE		[1998] > [1997]
 		AND	[1997] > [1996]
 
 
---WITH ROLLUP, Подытоги (Subtotals)----------------------------------------------
+--WITH ROLLUP, WITH CUBE, Подытоги (Subtotals)----------------------------------------------
 
 SELECT		ShipCountry, YEAR(OrderDate), COUNT(*)
 FROM		Orders
@@ -32,3 +32,8 @@ GROUP BY	YEAR(OrderDate), ShipCountry WITH ROLLUP --Поменяли столб�
 SELECT		ShipCountry, YEAR(OrderDate), EmployeeID,  COUNT(*)
 FROM		Orders
 GROUP BY	ShipCountry, YEAR(OrderDate), EmployeeID WITH ROLLUP --Добавили ID работника
+
+--WITH CUBE
+SELECT		ShipCountry, YEAR(OrderDate), COUNT(*)
+FROM		Orders
+GROUP BY	ShipCountry, YEAR(OrderDate) WITH CUBE
