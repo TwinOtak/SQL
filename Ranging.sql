@@ -84,7 +84,7 @@ FROM	(
 		) AS MyScroller
 WHERE	Num BETWEEN (@Page -1) * @PageSize + 1 AND @Page * @PageSize
 
---Новый постраничный вывод
+--Новый постраничный вывод--Возможно работает только MsSQL
 SELECT		ProductName, UnitPrice
 FROM		Products
 ORDER BY	UnitPrice DESC
