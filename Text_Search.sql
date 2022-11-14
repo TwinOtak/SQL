@@ -24,3 +24,27 @@ WHERE		Contains (Description, 'ride') -- 10 строк
 SELECT		*
 FROM		Production.ProductDescription
 WHERE		FreeText (Description, 'ride') -- 22 строки
+
+--Contains Table--
+SELECT		ProductDescriptionID, Description, CT.[key], RANK
+FROM		[Production].[ProductDescription] AS P
+			INNER JOIN
+			ContainsTable	(
+							[Production].[ProductDescription],
+							Description,
+							'ride'
+							) CT
+			ON P.ProductDescriptionID = CT.[Key]
+ORDER BY	CT.Rank DESC
+
+--FreeTextTable-- Работает так же как и Contains Table, только с упором на свои особенности
+SELECT		ProductDescriptionID, Description, CT.[key], RANK
+FROM		[Production].[ProductDescription] AS P
+			INNER JOIN
+			FreeTextTable	(
+							[Production].[ProductDescription],
+							Description,
+							'ride'
+							) CT
+			ON P.ProductDescriptionID = CT.[Key]
+ORDER BY	CT.Rank DESC
